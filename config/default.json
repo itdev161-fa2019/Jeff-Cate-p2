@@ -1,0 +1,4 @@
+{
+    "mongoURL": "mongodb+srv://catej:motorcycle1@cluster0-k4hps.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtSecret": "The secret can be anything."
+}
