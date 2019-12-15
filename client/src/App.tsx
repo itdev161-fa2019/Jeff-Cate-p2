@@ -4,17 +4,18 @@ import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import './App.css';
 import Register from './components/Register/Register';
 import Login from './components/Login/Login.js';
-// import PostList from './components/PostList/PostList';
-// import Post from './components/Post/Post';
-// import CreatePost from './components/Post/CreatePost';
+import PostList from './components/PostList/PostList.js';
+// import Post from './components/Post/Post.js';
+// import { useHistory } from 'react-router-dom';
+import CreatePost from './components/Post/CreatePost';
 // import EditPost from './components/Post/EditPost';
 
 class App extends React.Component {
   state = {
-    // posts: [],
-    // post: null,
+    posts: [],
+    post: null,
     token: null,
-    user: null
+    user: null,
   };
 
   componentDidMount() {
@@ -30,7 +31,6 @@ class App extends React.Component {
     }
 
     if (token) {
-      console.log(`${user}: logged in \nToken: ${token} `)
       const config = {
         headers: {
           'x-auth-token': token
@@ -45,9 +45,10 @@ class App extends React.Component {
               token: token
             },
             () => {
-              // this.loadData();
+              this.loadData();
             }
           );
+          
         })
         .catch(error => {
           localStorage.removeItem('user');
@@ -57,27 +58,28 @@ class App extends React.Component {
     }
 
   }
-  // loadData = () => {
-  //   const { token } = this.state;
+  loadData = () => {
+    
+  const { token } = this.state;
 
-  //   if (token) {
-  //     const config = {
-  //       headers: {
-  //         'x-auth-token': token
-  //       }
-  //     };
-  //     axios
-  //       .get('http://localhost:5000/api/posts', config)
-  //       .then(response => {
-  //         this.setState({
-  //           posts: response.data
-  //         });
-  //       })
-  //       .catch((error) => {
-  //         console.error(`Error fetching data: ${error}`);
-  //       });
-  //   }
-  // };
+    if (token) {
+      const config = {
+        headers: {
+          'x-auth-token': token
+        }
+      };
+      axios
+        .get('http://localhost:5000/api/posts', config)
+        .then(response => {
+          this.setState({
+            posts: response.data
+          });
+        })
+        .catch((error) => {
+          console.error(`Error fetching data: ${error}`);
+        });
+    }
+  };
 
   logOut = () => {
     localStorage.removeItem('token');
@@ -92,29 +94,29 @@ class App extends React.Component {
   //   });
   // };
             
-  // deletePost = post => {
-  //   const { token } = this.state;
+  deletePost = post => {
+    const { token } = this.state;
 
-  //   if (token) {
-  //     const config = {
-  //       headers: {
-  //         'x-auth-token': token
-  //       }
-  //     };
+    if (token) {
+      const config = {
+        headers: {
+          'x-auth-token': token
+        }
+      };
 
-  //     axios
-  //     .delete(`http://localhost:5000/api/posts/${post._id}`, config)
-  //     .then(response => {
-  //       const newPosts = this.state.posts.filter(p => p._id !== post._id);
-  //       this.setState({
-  //         posts: [...newPosts]
-  //       });
-  //     })
-  //     .catch(error => {
-  //       console.error(`Error deleting post: ${error}`);
-  //     });
-  //   }
-  // };
+      axios
+      .delete(`http://localhost:5000/api/posts/${post._id}`, config)
+      .then(response => {
+        const newPosts = this.state.posts.filter(p => p._id !== post._id);
+        this.setState({
+          posts: [...newPosts]
+        });
+      })
+      .catch(error => {
+        console.error(`Error deleting post: ${error}`);
+      });
+    }
+  };
 
   // editPost = post => {
   //   this.setState({
@@ -122,13 +124,13 @@ class App extends React.Component {
   //   });
   // };
 
-  // onPostCreated = post => {
-  //   const newPosts = [...this.state.posts, post];
+  onPostCreated = post => {
+    const newPosts = [...this.state.posts, post];
 
-  //   this.setState({
-  //     posts: newPosts
-  //   });
-  // };
+    this.setState({
+      posts: newPosts
+    });
+  };
 
   // onPostUpdated = post => {
   //   console.log('updated post: ', post);
@@ -142,27 +144,29 @@ class App extends React.Component {
   //   });
   // };
 
+  
+
   render () {
-    // let { user, posts, post, token } = this.state;
-    let { user, token } = this.state;
+    let { user, posts, post, token } = this.state;
     const authProps = {
       authenticateUser: this.authenticateUser
+
     };
 
     return (
       <Router>
         <div className="App">
           <header className="App-header">
-            <h1>To Do</h1><br />           
+            <h1>To Do</h1>
+            <hr />          
             <ul>
               <li>
                 <Link to="/">Home</Link>
               </li>
               <li>
-                {//user 
-                // ? (
-                //   <Link to="/new-post">New Post</Link>
-                // ) : 
+                {user ? (
+                   <Link to="/new-post">New Post</Link>
+                 ) : 
                 (
                   <Link to="/register">Register</Link>
                 )}
@@ -183,26 +187,27 @@ class App extends React.Component {
               <Route exact path="/">
                 {user ? (
                   <React.Fragment>
-                    <div>Hello, {user}!</div>
-                    {/* <PostList
+                    <h2>{user}'s List</h2>
+                    <CreatePost token={token} onPostCreated={this.onPostCreated} />
+                    {<PostList
                       posts={posts}
-                      clickPost={this.viewPost}
+                      // clickPost={this.viewPost}
                       deletePost={this.deletePost}
-                      editPost={this.editPost}
-                    /> */}
+                      // editPost={this.editPost}*/
+                    />}
                   </React.Fragment>
                 ) : (
                   <React.Fragment>Please Register or Login</React.Fragment>
                 )}
               </Route>
 
-              {/* <Route path="/posts/:postId">
+              {/* {<Route path="/posts/:postId">
                 <Post post={post} />
-              </Route>
-              
-              <Route path="/new-post">
-                <CreatePost token={token} onPostCreated={this.onPostCreated} />
               </Route> */}
+              
+              {/* <Route path="/new-post">
+                <CreatePost token={token} onPostCreated={this.onPostCreated} />
+              </Route>} */}
 
 
               {/* <Route path="/edit-post/:postId">
