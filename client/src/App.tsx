@@ -21,10 +21,28 @@ class App extends React.Component {
   componentDidMount() {
     this.authenticateUser();
   }
+  
+  // filterPosts = () => {
+  //   let newPosts = [];
+  //   this.state.posts.forEach(post => {
+      
+  //     if (post.user === this.state.user) {
+  //         newPosts.push(post);
+  //         console.log(`${post.user}`);
+  //         console.log(`${post}`);
+  //     }
+  //   });
+
+  //   this.setState({
+  //     posts: newPosts
+  //   });
+
+  // }
 
   authenticateUser = () => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
+    console.log(`${user}`);
     if (!token) {
       localStorage.removeItem('user')
       this.setState({ user: null });
@@ -65,6 +83,7 @@ class App extends React.Component {
     if (token) {
       const config = {
         headers: {
+          //authenticate user 
           'x-auth-token': token
         }
       };
@@ -78,8 +97,32 @@ class App extends React.Component {
         .catch((error) => {
           console.error(`Error fetching data: ${error}`);
         });
+
+        // console.log('filter posts running ');
+
+        // let newPosts = [];
+        // console.log(`${newPosts}`);
+
+        // for (const post in this.state.posts) {
+        //   if (post.user === this.state.user) {
+        //     newPosts.push(post);
+        //   }
+        // }
+        // this.state.posts.forEach(post => {
+        //   console.log("foreach");
+        //   if (/*post.user === this.state.user*/ newPosts === null) {
+        //       // newPosts.push(post);
+        //       console.log(`${post.user}`);
+        //       console.log(`${post}`);
+        //   }
+        // });
+
+        // this.setState({
+        //   posts: newPosts
+        // });
     }
   };
+
 
   logOut = () => {
     localStorage.removeItem('token');
@@ -101,16 +144,20 @@ class App extends React.Component {
       const config = {
         headers: {
           'x-auth-token': token
-        }
+        },
+        
       };
 
       axios
       .delete(`http://localhost:5000/api/posts/${post._id}`, config)
       .then(response => {
+
         const newPosts = this.state.posts.filter(p => p._id !== post._id);
         this.setState({
           posts: [...newPosts]
         });
+
+          // log deleted post if deleted
       })
       .catch(error => {
         console.error(`Error deleting post: ${error}`);
@@ -147,7 +194,7 @@ class App extends React.Component {
   
 
   render () {
-    let { user, posts, post, token } = this.state;
+    let { user, posts, token } = this.state;
     const authProps = {
       authenticateUser: this.authenticateUser
 
@@ -165,11 +212,11 @@ class App extends React.Component {
               </li>
               <li>
                 {user ? (
-                   <Link to="/new-post">New Post</Link>
+                   <Link to="/"></Link>
                  ) : 
                 (
                   <Link to="/register">Register</Link>
-                )}
+                 )}
               </li>
               <li>
                 {user ? (
@@ -190,9 +237,11 @@ class App extends React.Component {
                     <h2>{user}'s List</h2>
                     <CreatePost token={token} onPostCreated={this.onPostCreated} />
                     {<PostList
+                      // token={this.state.token}
                       posts={posts}
                       // clickPost={this.viewPost}
                       deletePost={this.deletePost}
+                      // filterPosts={this.filterPosts}
                       // editPost={this.editPost}*/
                     />}
                   </React.Fragment>

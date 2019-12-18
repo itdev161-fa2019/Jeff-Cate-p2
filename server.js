@@ -211,9 +211,19 @@ app.post(
  */
 app.get('/api/posts', auth, async (req, res) => {
     try {
+        
         const posts = await Post.find().sort({ date: -1 });
-
-        res.json(posts);
+        let tryPosts = [];
+        const user = await User.findById(req.user.id)
+        let newPosts = [];
+        posts.forEach(post => {
+            
+        if (post.user.toString() === user.id) {
+            newPosts.push(post);
+        }
+        tryPosts = newPosts;
+    });
+        res.json(tryPosts);
     } catch (error) {
         console.error(error);
         res.status(500).send('Server error');

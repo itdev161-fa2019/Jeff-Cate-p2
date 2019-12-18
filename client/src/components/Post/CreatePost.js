@@ -21,7 +21,7 @@ const CreatePost = ({ token, onPostCreated }) => {
 
     const create = async () => {
         if (!title) {
-            console.log('Title and body are required');
+            console.log('Title is required.');
         } else {
             const newPost = {
                 title: title

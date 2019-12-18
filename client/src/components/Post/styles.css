@@ -14,11 +14,12 @@
 }
 
 input.newItem {
-    padding: .5em 0;
-    margin-top: em;  
+    padding: .5em 1em;
+    padding-bottom: .5em;
+    margin-right: 1em;  
     display: flexbox;
     float: left;
-    width: 65vmax;
+    width: 75vmax;
     text-align: center; 
     /* height: 2em; */
     font-size: 12pt;
@@ -27,8 +28,8 @@ input.newItem {
   }
   button.newItem {
     margin-top: 1.1em;
-    margin-bottom: 1em;
-    padding-bottom: .45em;
+    margin-bottom: 2em;
+    padding-bottom: .5em;
     color: #09d3ac;
     border-color: #09d3ac;
     background-color: #282c34;
@@ -37,7 +38,7 @@ input.newItem {
     float: left;
     width: 15vmax;
     text-align: center;
-  
+
     border-radius: 50px;
   
   }

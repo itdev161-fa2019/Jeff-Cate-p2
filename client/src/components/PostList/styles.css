@@ -1,9 +1,10 @@
 .postListItem p {
-    padding-top: 1em;
-    margin-top: 0em;  
+    padding: .5em 1em;
+    margin-top: 0em;
+    margin-right: 1em;   
     display: block;
     float: left;
-    width: 65vmax;
+    width: 75vmax;
     text-align: center;
     height: 2em;
     border-bottom: #282c34 dotted; 
@@ -32,21 +33,3 @@
     font-style: italic;
     transform: translate(0em, -.15em);
 }
-
-/* .postListItem p {
-    max-width: 60vmax;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-} */
-
-/* .postControls {
-    margin: 10px 0 10px 0;
-}
-
-.postControls button {
-    display: block;
-    margin-left: 10px;
-    float: left;
-    width: 20vmax;
-} */
